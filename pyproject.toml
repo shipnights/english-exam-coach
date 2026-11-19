@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "english-exam-coach"
+version = "0.1.0"
+description = "A local-first practice coach for English exam writing, with optional AI feedback."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "Yaroslav Serhiienko" }]
+dependencies = [
+    "fastapi>=0.115,<1",
+    "uvicorn[standard]>=0.32,<1",
+    "jinja2>=3.1,<4",
+    "python-multipart>=0.0.9,<1",
+]
+
+[project.optional-dependencies]
+# Real AI feedback. Without it the app still runs and shows measured checks only.
+llm = ["anthropic>=0.40,<1"]
+dev = ["pytest>=8,<9", "httpx>=0.27,<1"]
+
+[project.scripts]
+english-exam-coach = "english_exam_coach.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+english_exam_coach = ["templates/*.html", "static/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
