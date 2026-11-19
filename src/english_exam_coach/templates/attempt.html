@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Attempt #{{ attempt.id }}{% endblock %}
+{% block content %}
+<h1>Attempt #{{ attempt.id }}</h1>
+<p class="muted">{{ task.track_label }}: {{ task.name }}. {{ attempt.created_at }}. {{ attempt.seconds_used // 60 }}:{{ "%02d"|format(attempt.seconds_used % 60) }} used of {{ task.minutes }}:00.</p>
+
+{% if attempt.error %}
+<p class="error" role="alert">Scored feedback was not available for this attempt: {{ attempt.error }} Your measured checks are below. Submit again to retry.</p>
+{% endif %}
+
+{% if attempt.feedback.has_scores %}
+<section>
+  <h2>Estimated {{ task.scale.label }}: {{ attempt.feedback|score_range }}</h2>
+  <p class="muted">An estimate from {{ attempt.feedback.provider }} for practice. It is not an official score.</p>
+  <table>
+    <thead><tr><th>Criterion</th><th>{{ task.scale.label|capitalize }}</th><th>Comment</th></tr></thead>
+    <tbody>
+      {% for c in attempt.feedback.criteria %}
+      <tr><td>{{ c.name }}</td><td>{{ c.score|g }}</td><td>{{ c.comment }}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% if attempt.feedback.strengths %}
+  <h3>Strengths</h3>
+  <ul>{% for s in attempt.feedback.strengths %}<li>{{ s }}</li>{% endfor %}</ul>
+  {% endif %}
+  {% if attempt.feedback.improvements %}
+  <h3>To improve</h3>
+  <ul>{% for s in attempt.feedback.improvements %}<li>{{ s }}</li>{% endfor %}</ul>
+  {% endif %}
+  {% if attempt.feedback.revised_paragraph %}
+  <h3>A rewrite of your weakest paragraph</h3>
+  <p class="quote">{{ attempt.feedback.revised_paragraph }}</p>
+  {% endif %}
+</section>
+{% endif %}
+
+<section>
+  <h2>Measured checks</h2>
+  <p class="muted">Counted from your text. These are simple heuristics.</p>
+  <ul class="facts">
+    <li>{{ metrics.words }} words, {{ metrics.sentences }} sentences, {{ metrics.paragraphs }} paragraph{{ "" if metrics.paragraphs == 1 else "s" }}</li>
+    <li>Average sentence: {{ metrics.avg_sentence_words|g }} words. Longest: {{ metrics.longest_sentence_words }}.</li>
+    <li>{{ metrics.unique_words }} different words ({{ "%.0f"|format(metrics.type_token_ratio * 100) }}%)</li>
+  </ul>
+  {% if checks.strengths %}
+  <h3>Going well</h3>
+  <ul>{% for s in checks.strengths %}<li>{{ s }}</li>{% endfor %}</ul>
+  {% endif %}
+  {% if checks.improvements %}
+  <h3>Worth fixing</h3>
+  <ul>{% for s in checks.improvements %}<li>{{ s }}</li>{% endfor %}</ul>
+  {% endif %}
+</section>
+
+<section>
+  <h2>Prompt</h2>
+  <p>{{ attempt.prompt_text }}</p>
+  {% if prompt and prompt.table %}
+  <table>
+    <thead><tr>{% for cell in prompt.table[0] %}<th>{{ cell }}</th>{% endfor %}</tr></thead>
+    <tbody>
+      {% for row in prompt.table[1:] %}<tr>{% for cell in row %}<td>{{ cell }}</td>{% endfor %}</tr>{% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+  <h2>Your response</h2>
+  <p class="quote">{{ attempt.response_text }}</p>
+</section>
+
+<p><a class="button" href="/write/{{ task.id }}">Practise this task again</a> <a href="/progress">See progress</a></p>
+{% endblock %}

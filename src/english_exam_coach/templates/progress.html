@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Progress{% endblock %}
+{% block content %}
+<h1>Progress</h1>
+
+{% if not attempts %}
+<p>No attempts yet. <a href="/">Start practising.</a></p>
+{% else %}
+<section>
+  <h2>By task</h2>
+  <table>
+    <thead><tr><th>Task</th><th>Attempts</th><th>Average words</th><th>Latest scored estimate</th></tr></thead>
+    <tbody>
+      {% for row in rows %}
+      <tr>
+        <td>{{ row.task.track_label }}: {{ row.task.name }}</td>
+        <td>{{ row.count }}</td>
+        <td>{{ row.avg_words }}</td>
+        <td>{{ row.latest_range or "none yet" }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>All attempts</h2>
+  <table>
+    <thead><tr><th>#</th><th>When</th><th>Task</th><th>Words</th><th>Estimate</th></tr></thead>
+    <tbody>
+      {% for a in attempts %}
+      {% set task = tasks[a.task_id] %}
+      <tr>
+        <td><a href="/attempts/{{ a.id }}">{{ a.id }}</a></td>
+        <td>{{ a.created_at }}</td>
+        <td>{{ task.track_label }}: {{ task.name }}</td>
+        <td>{{ a.words }}</td>
+        <td>{{ a.feedback|score_range if a.feedback.has_scores else "-" }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Practice writing</h1>
+<p class="lede">Pick a task. You get an original prompt, a timer and a word count. After you submit, you see measured checks{% if provider_name != "offline" %} and an estimated score with feedback{% endif %}.</p>
+
+{% for track, tasks in groups.items() %}
+<section>
+  <h2>{{ track }}</h2>
+  <ul class="cards">
+    {% for task in tasks %}
+    <li>
+      <h3>{{ task.name }}</h3>
+      <p>{{ task.minutes }} minutes, {{ task.target_text }}.</p>
+      <p class="muted">{{ task.instructions }}</p>
+      <a class="button" href="/write/{{ task.id }}">Start</a>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+{% endfor %}
+
+{% if recent %}
+<section>
+  <h2>Recent attempts</h2>
+  <ul class="plain">
+    {% for a in recent %}
+    <li><a href="/attempts/{{ a.id }}">#{{ a.id }}</a>, {{ a.created_at }}, {{ a.words }} words{% if a.feedback.has_scores %}, estimated {{ a.feedback|score_range }}{% endif %}</li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+{% endblock %}

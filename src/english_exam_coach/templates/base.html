@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}English Exam Coach{% endblock %}</title>
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+  <header class="site">
+    <a class="brand" href="/">English Exam Coach</a>
+    <nav>
+      <a href="/">Practice</a>
+      <a href="/progress">Progress</a>
+    </nav>
+  </header>
+  {% if provider_name == "offline" %}
+  <p class="banner">Offline mode: you get measured checks only. Set <code>ANTHROPIC_API_KEY</code> to get criterion scores and written feedback.</p>
+  {% endif %}
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+  <footer>
+    <p>Practice tool, not an official test. Scores are estimates. Not affiliated with any test provider.</p>
+  </footer>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

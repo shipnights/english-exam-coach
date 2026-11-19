@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}{{ task.track_label }} {{ task.name }}{% endblock %}
+{% block content %}
+<h1>{{ task.track_label }}: {{ task.name }}</h1>
+<p class="muted">{{ task.instructions }}</p>
+
+<section class="prompt">
+  <h2>Prompt</h2>
+  <p>{{ prompt.text }}</p>
+  {% if prompt.table %}
+  <table>
+    <thead><tr>{% for cell in prompt.table[0] %}<th>{{ cell }}</th>{% endfor %}</tr></thead>
+    <tbody>
+      {% for row in prompt.table[1:] %}<tr>{% for cell in row %}<td>{{ cell }}</td>{% endfor %}</tr>{% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+  <p><a href="/write/{{ task.id }}">Try a different prompt</a></p>
+</section>
+
+{% if error %}<p class="error" role="alert">{{ error }}</p>{% endif %}
+
+<form method="post" action="/submit" id="write-form"
+      data-minutes="{{ task.minutes }}" data-min-words="{{ task.min_words }}"
+      {% if task.max_words %}data-max-words="{{ task.max_words }}"{% endif %}>
+  <input type="hidden" name="task_id" value="{{ task.id }}">
+  <input type="hidden" name="prompt_id" value="{{ prompt.id }}">
+  <input type="hidden" name="seconds_used" id="seconds_used" value="0">
+
+  <label for="response_text">Your response</label>
+  <textarea id="response_text" name="response_text" rows="16" required>{{ text }}</textarea>
+
+  <p class="status">
+    <span id="wordcount">0 words</span> (target {{ task.target_text }})
+    <span class="sep">|</span>
+    <span id="timer">0:00</span> of {{ task.minutes }}:00
+  </p>
+  <button type="submit">Submit for feedback</button>
+</form>
+{% endblock %}
+{% block scripts %}<script src="/static/app.js" defer></script>{% endblock %}
