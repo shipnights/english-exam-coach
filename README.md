@@ -1,5 +1,7 @@
 # English Exam Coach
 
+[![CI](https://github.com/shipnights/english-exam-coach/actions/workflows/ci.yml/badge.svg)](https://github.com/shipnights/english-exam-coach/actions/workflows/ci.yml)
+
 A local practice coach for English exam writing. You pick a task, get an original prompt, write
 against a timer and a live word count, and see what the text measures up to. With an Anthropic
 API key it also gives an estimated score range for each marking criterion, written feedback and
