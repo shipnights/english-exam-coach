@@ -1,7 +1,8 @@
 # Roadmap
 
 What I plan to build, roughly in this order. It is a plan, not a promise, and the order will move
-as I learn what helps most when practising.
+as I learn what helps most when practising. Each open item is also a GitHub issue with a rough
+hour estimate.
 
 ## Next: make the writing loop better
 
@@ -20,14 +21,13 @@ as I learn what helps most when practising.
 
 ## More skills
 
-- [ ] Speaking practice: record in the browser, transcribe locally, then reuse the same feedback
-      pipeline with speaking criteria
 - [ ] Reading practice with original passages and questions
-- [ ] Listening practice with original scripts read by a local text-to-speech voice
+- [ ] Speaking and listening practice: first decide an approach that keeps the app local-first and
+      does not send audio to third parties by default, then reuse the same feedback pipeline
 
 ## Packaging and quality
 
-- [ ] GitHub Actions workflow that runs the test suite on Python 3.11 and 3.12
+- [x] GitHub Actions workflow that runs the test suite on Python 3.11 and 3.12
 - [ ] One-command start on Windows and a `pipx` install
 - [ ] Accessibility pass: keyboard use, focus order, contrast and screen reader labels
 - [ ] Browser tests for the writing page timer and word count
