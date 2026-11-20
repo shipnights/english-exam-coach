@@ -25,6 +25,16 @@ its scores are estimates, not official results.
   fixes and a rewrite of the weakest paragraph.
 - **History and progress** for every attempt, stored locally.
 
+### Screenshots
+
+Offline mode. The theme follows your system's light or dark setting.
+
+![Choosing a task](docs/screenshots/01-choose-a-task.jpg)
+
+![The writing page, with a live word count and timer](docs/screenshots/02-write.jpg)
+
+![Measured checks after submitting](docs/screenshots/03-measured-checks.jpg)
+
 ## What it does not do yet
 
 Speaking, listening and reading practice, adding your own prompts, and charts. See
